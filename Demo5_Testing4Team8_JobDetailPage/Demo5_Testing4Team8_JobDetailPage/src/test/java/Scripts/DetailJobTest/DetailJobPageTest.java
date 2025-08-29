@@ -60,44 +60,6 @@ public class DetailJobPageTest extends NotLoggedInBaseTest {
         detailJobPage.verifyContactMeButtonNotLoggedIn();
     }
 
-    //    Test FAQ Section
-    @Test
-    public void testFAQSectionDisplay() {
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.verifyFAQSectionDisplay();
-    }
-
-    @Test
-    public void testFAQDefaultDisplay() {
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.verifyQuestionDefaultDisplay();
-    }
-
-    @Test
-    public void testAnswerDisplayWhenCLickQuestion() {
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.verifyAnswerDisplayWhenCLicking();
-    }
-
-    @Test
-    public void testAnswerHiddenWhenClosing() {
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.verifyAnswerHiddenWhenClosing();
-    }
-
-    //    Test Comment List
-    @Test
-    public void testCommentList_WhenCommentsExist() {
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.verifyCommentListDisplay();
-    }
-
-    @Test
-    public void testCommentList_WhenNoComment() {
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.verifyNoCommentDisplayedWithMessage();
-    }
-
     //  *****
     //  *****Test Comment Section*****
 

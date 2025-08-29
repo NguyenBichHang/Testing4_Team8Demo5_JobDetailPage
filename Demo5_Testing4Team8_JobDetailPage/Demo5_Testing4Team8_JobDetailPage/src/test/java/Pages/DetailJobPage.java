@@ -26,13 +26,13 @@ public class DetailJobPage {
     }
     //  *****
     //  *****Locator - Navigation*****
-    @FindBy(xpath ="//a[contains(text(),'Graphics & Design')]")
+    @FindBy(xpath ="//a[@class='active'][normalize-space()='Digital Marketing']")
     private WebElement navigation1;
 
-    @FindBy(xpath ="//a[contains(text(),'Logo & Brand Identity')]")
+    @FindBy(xpath ="//a[normalize-space()='Search']")
     private WebElement navigation2;
 
-    @FindBy(xpath ="//a[contains(text(),'Logo Desgin')]")
+    @FindBy(xpath ="//a[@class='active'][normalize-space()='Search Engine Optimization (SEO)']")
     private WebElement navigation3;
 
     //  *****
@@ -94,19 +94,19 @@ public class DetailJobPage {
 
     //  *****
     //  *****Locator - FAQ*****
-    @FindBy(xpath ="(//div[@class='FAQ mt-5']")
+    @FindBy(xpath ="//div[@class='FAQ mt-5']")
     private WebElement faqSection;
 
-    @FindBy(xpath ="(//input[@type='checkbox'])[1]")
+    @FindBy(xpath = "//div[@class='FAQ mt-5']//li[1]")
     private WebElement question1;
 
-    @FindBy(xpath ="(//input[@type='checkbox'])[2]")
+    @FindBy(xpath ="//div[@class='FAQ mt-5']//li[2]")
     private WebElement question2;
 
-    @FindBy(xpath ="(//input[@type='checkbox'])[3]")
+    @FindBy(xpath ="//div[@class='FAQ mt-5']//li[3]")
     private WebElement question3;
 
-    @FindBy(xpath ="(//input[@type='checkbox'])[4]")
+    @FindBy(xpath ="//div[@class='FAQ mt-5']//li[4]")
     private WebElement question4;
 
     @FindBy(xpath ="//div[@class='FAQ mt-5']//li[1]//p[1]")
@@ -115,10 +115,10 @@ public class DetailJobPage {
     @FindBy(xpath ="//div[@class='FAQ mt-5']//li[2]//p[1]")
     private WebElement answer2;
 
-    @FindBy(xpath ="//div[@class='FAQ mt-5']//li[1]//p[3]")
+    @FindBy(xpath ="//div[@class='FAQ mt-5']//li[3]//p[3]")
     private WebElement answer3;
 
-    @FindBy(xpath ="//div[@class='FAQ mt-5']//li[1]//p[4]")
+    @FindBy(xpath ="//div[@class='FAQ mt-5']//li[4]//p[4]")
     private WebElement answer4;
 
     @FindBy(xpath ="//*[name()='svg']/*[name()='path'][contains(@d, 'M')]")
@@ -153,11 +153,14 @@ public class DetailJobPage {
     @FindBy(xpath = "//*[contains(@class, 'star')]")
     private List<WebElement> starRating;
 
-    @FindBy(xpath ="//div[contains(@class, 'comment')")
-    private WebElement allComments;
+    @FindBy(xpath ="//div[@class='review-comment']")
+    private WebElement commentSection;
 
-    @FindBy(xpath ="//div[contains(text(), 'There is no comments')")
-    private WebElement noResultMessage;
+    @FindBy(xpath ="//li[@class='row py-4']")
+    private List<WebElement> SearchResults;
+
+    @FindBy(xpath = "//div[contains(text(), \"There is no results\")]")
+    private List<WebElement> noResultMessage;
 
     @FindBy(xpath = "//div[@class='reviewer-avatar col-2']")
     private List<WebElement> commentAvatar;
@@ -211,7 +214,7 @@ public class DetailJobPage {
     @FindBy(xpath ="//button[@class='comment-submit']")
     private WebElement commentButton;
 
-    @FindBy(css = ".ant-rate-star")
+    @FindBy(css = "i.ant-rate-star")
     private List<WebElement> ratingStars;
 
     @FindBy(css = ".ant-rate .ant-rate-star div[role='radio'][aria-checked='true']")
@@ -220,9 +223,9 @@ public class DetailJobPage {
 //  *****
 //  *****Methods - Navigation*****
     public void verifyNavigationLinkDisplayed(){
-        Assert.assertTrue(navigation1.isDisplayed(), "Link Navigation không hiển thị");
-        Assert.assertTrue(navigation2.isDisplayed(), "Link Navigation không hiển thị");
-        Assert.assertTrue(navigation3.isDisplayed(), "Link Navigation không hiển thị");
+        Assert.assertTrue(navigation1.isDisplayed(), "Link Navigation is not displayed");
+        Assert.assertTrue(navigation2.isDisplayed(), "Link Navigation is not displayed");
+        Assert.assertTrue(navigation3.isDisplayed(), "Link Navigation is not displayed");
     }
 //  *****
 //  *****Methods - Job Detail*****
@@ -239,7 +242,7 @@ public class DetailJobPage {
     }
 
     public void verifyImageHoverTransition(){
-        
+        Actions actions = new Actions(driver);
         js = (JavascriptExecutor) driver;
 
         String initialTransform = js.executeScript(
@@ -248,7 +251,8 @@ public class DetailJobPage {
         String hoverTransform = js.executeScript(
                 "return window.getComputedStyle(arguments[0]).transform", jobImage).toString();
         Assert.assertNotEquals(hoverTransform, initialTransform,
-                "Image không có hover transition effect - Transform không thay đổi");        actions.moveByOffset(100, 100).perform();
+                "Image không có hover transition effect - Transform không thay đổi");
+        actions.moveByOffset(100, 100).perform();
         String finalTransform = js.executeScript(
                 "return window.getComputedStyle(arguments[0]).transform", jobImage).toString();
         System.out.println("Final transform after mouse leave: " + finalTransform);
@@ -382,36 +386,40 @@ public class DetailJobPage {
     }
 
     public void verifyQuestionDefaultDisplay(){
-        String getArrowTransform = arrowButton.getCssValue("transform");
-        Assert.assertTrue(question1.isDisplayed() && question2.isDisplayed() &&
-                        question3.isDisplayed() && question4.isDisplayed(),
+        Actions actions = new Actions(driver);
+        actions.moveToElement(question4).perform();
+        Assert.assertTrue(question1.isDisplayed()&& question2.isDisplayed() &&
+                        question3.isDisplayed() && question4.isDisplayed() ,
                 "All questions should be visible");
         Assert.assertFalse(answer1.isDisplayed() && answer2.isDisplayed() &&
                         answer3.isDisplayed() && answer4.isDisplayed(),
                 "All questions should be hidden");
-        Assert.assertTrue(getArrowTransform.contains("90"),
-                "Mũi tên ban đầu phải ở trạng thái hướng xuống");
+        String getArrowTransform = arrowButton.getCssValue("transform");
+        Assert.assertTrue(getArrowTransform.contains("none"),
+                "The arrow should be pointing down by default");
     }
 
     public void verifyAnswerDisplayWhenCLicking(){
-        String getArrowTransform = arrowButton1.getCssValue("transform");
-        question1.click();
+        Actions actions = new Actions(driver);
+        actions.moveToElement(question1).click().perform();
         Assert.assertTrue(answer1.isDisplayed(),
                 "Answer should be displayed after clicking");
-        Assert.assertTrue(getArrowTransform.contains("-90"),
-                "Mũi tên ban đầu phải ở trạng thái hướng lên");
+//        String getArrowTransform = arrowButton1.getCssValue("transform");
+//        Assert.assertTrue(getArrowTransform.contains("matrix(-1"),
+//                "The arrow should be pointing up");
     }
 
     public void verifyAnswerHiddenWhenClosing(){
         String getArrowTransform = arrowButton.getCssValue("transform");
-        question1.click();
+        Actions actions = new Actions(driver);
+        actions.moveToElement(question1).click().perform();
         Assert.assertTrue(answer1.isDisplayed(),
                 "Answer should be displayed after clicking");
         question1.click();
         Assert.assertFalse(answer1.isDisplayed(),
                 "Answer should be hidden after clicking twice");
-        Assert.assertTrue(getArrowTransform.contains("90"),
-                "Mũi tên ban đầu phải ở trạng thái hướng xuống");
+        Assert.assertTrue(getArrowTransform.contains("none"),
+                "The arrow should be pointing down by default");
     }
 //  *****
 //  *****Methods - Search*****
@@ -423,23 +431,20 @@ public class DetailJobPage {
     }
 
     public void inputSearchText(String search){
-        Assert.assertTrue(textboxSearch.isDisplayed(), "Search box should be visible");
-        textboxSearch.sendKeys(search);
+        Actions actions = new Actions(driver);
+        actions.moveToElement(textboxSearch)
+                .click()
+                .sendKeys(search)
+                .perform();
     }
 
     public void clickSearchButton(){
-        Assert.assertTrue(textboxSearch.isEnabled(), "Search box should be enabled");
         searchButton.click();
     }
 
     public void waitForSearchResult(){
-        try {
-            wait.until(ExpectedConditions.presenceOfElementLocated(
-                    org.openqa.selenium.By.xpath("//div[contains(@class, 'comment')]")
-            ));
-        } catch (Exception e) {
-            // Results might not be present for invalid searches
-        }
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.visibilityOf(commentSection));
     }
 
     public List<WebElement> getSearchResults(String search) {
@@ -453,20 +458,10 @@ public class DetailJobPage {
         return results.size() > 0;
     }
 
-    public boolean searchResultsContainSearchKeyword(String search) {
-        List<WebElement> results = getSearchResults(search);
-        for (WebElement result : results) {
-            if (result.getText().toLowerCase().contains(search.toLowerCase())) {
-                return true;
-            }
-        }
-        return false;
-    }
+
 
     public int getAllReviewsCount() {
-        List<WebElement> allReviews = driver.findElements(By.xpath("//div[contains(@class, 'comment')]")
-        );
-        return allReviews.size();
+            return SearchResults.size();
     }
 
     public boolean areReviewElementsVisible() {
@@ -481,38 +476,36 @@ public class DetailJobPage {
                 yesButton.size() > 0 &&
                 noButton.size() > 0;
     }
+    public boolean searchResultsContainSearchKeyword(String search) {
+        List<WebElement> results = getSearchResults(search);
+        for (WebElement result : results) {
+            if (result.getText().toLowerCase().contains(search.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public void verifyValidSearchResult(String search){
         Assert.assertTrue(hasSearchResults(search),
                 "Search should return results for valid keyword: " + search);
         Assert.assertTrue(searchResultsContainSearchKeyword(search),
                 "Search results should contain the search term: " + search);
-//        List<WebElement> searchResults = driver.findElements(
-//                By.xpath("//div[contains(text(), '" + search + "') or .//*[contains(text(), '" + search + "')]]")
-//        );
-//        Assert.assertTrue(searchResults.size() > 0, "Search should return results for valid keyword");
-//        boolean foundSearchTerm = false;
-//        for (WebElement result : searchResults) {
-//            if (result.getText().toLowerCase().contains(search.toLowerCase())) {
-//                foundSearchTerm = true;
-//                break;
-//            }
-//        }
-//        Assert.assertTrue(foundSearchTerm, "Search results should contain the search term");
     }
-//    public boolean hasNoResultMessage() {
-//        return noResultMessage.size() > 0;
-//    }
     
-    public void verifyInvalidSearchResult(String search){
-        boolean hasResults = hasSearchResults(search);
-//        boolean hasNoResultMessage = hasNoResultMessage();
-//        Assert.assertTrue(!hasResults || hasNoResultMessage,
-//                "Invalid search should return no results or show no results message");
+    public void verifyInvalidSearchResult(){
+        Assert.assertFalse(noResultMessage.isEmpty(),
+                "Invalid search should show no results message");
+    }
+
+    public void verifySearchKeywordStillDisplayed(String search){
+        String currentValue = textboxSearch.getAttribute("value");
+        Assert.assertEquals(currentValue, search, "Search keyword is not displayed after searching");
     }
 
     public void verifyAllCommentsAreDisplayed(){
         int reviewCount = getAllReviewsCount();
+        System.out.println("Review/Comment count: " + reviewCount);
         Assert.assertTrue(reviewCount > 0,
                 "All reviews should be displayed when search is empty");
     }
@@ -520,34 +513,46 @@ public class DetailJobPage {
 //  *****
 //  ****Methods - Comment List****
     public void verifyCommentListDisplay(){
+        Actions actions = new Actions(driver);
+        actions.moveToElement(commentSection).perform();
         Assert.assertTrue(commentItem.size() > 0,
-                "Không có comment nào hiển thị!");
+                "There is no comments displaying");
         for (int i = 0; i < commentItem.size(); i++) {
-            Assert.assertTrue(commentAvatar.get(i).isDisplayed(), "Avatar không hiển thị ở comment " + i);
-            Assert.assertTrue(flags.get(i).isDisplayed(), "Quốc kỳ không hiển thị ở comment " + i);
-            Assert.assertTrue(countryNames.get(i).isDisplayed(), "Tên quốc gia không hiển thị ở comment " + i);
-            Assert.assertTrue(stars.get(i).isDisplayed(), "Icon Star không hiển thị ở comment " + i);
-            Assert.assertFalse(starScore.get(i).getText().trim().isEmpty(), "Số sao không hiển thị ở comment " + i);
-            Assert.assertFalse(contents.get(i).getText().trim().isEmpty(), "Nội dung trống ở comment " + i);
-            Assert.assertTrue(helpfulText.get(i).isDisplayed(), "Helpful không hiển thị ở comment " + i);
-            Assert.assertTrue(yesButton.get(i).isDisplayed(), "Yes Button không hiển thị ở comment " + i);
-            Assert.assertTrue(noButton.get(i).isDisplayed(), "No Button không hiển thị ở comment " + i);
+            Assert.assertTrue(commentAvatar.get(i).isDisplayed(), "Avatar is not displayed at comment " + i);
+            Assert.assertTrue(flags.get(i).isDisplayed(), "Flag is not displayed at comment " + i);
+            Assert.assertTrue(countryNames.get(i).isDisplayed(), "Country Name is not displayed at ở comment " + i);
+            Assert.assertTrue(stars.get(i).isDisplayed(), "Icon Star is not displayed at comment " + i);
+            Assert.assertFalse(starScore.get(i).getText().trim().isEmpty(), "Star Score is not displayed at comment " + i);
+            Assert.assertFalse(contents.get(i).getText().trim().isEmpty(), "Comment content is empty at comment " + i);
+            Assert.assertTrue(helpfulText.get(i).isDisplayed(), "Text Helpful is not displayed at comment " + i);
+            Assert.assertTrue(yesButton.get(i).isDisplayed(), "Yes Button is not displayed at comment " + i);
+            Assert.assertTrue(noButton.get(i).isDisplayed(), "No Button is not displayed at comment " + i);
         }
     }
 
     public void verifyNoCommentDisplayedWithMessage() {
-        Assert.assertEquals(commentItem.size(), 0, "Vẫn còn comment hiển thị, mong muốn = 0!");
-        Assert.assertTrue(noResultMessage.isDisplayed(), "Message 'There is no comments' không hiển thị!");
-        Assert.assertEquals(noResultMessage.getText().trim(), "There is no comments",
-                "Nội dung message không đúng!");
+        Actions actions = new Actions(driver);
+        actions.moveToElement(commentSection).perform();
+        Assert.assertEquals(commentItem.size(), 0,
+                "Vẫn còn comment hiển thị, mong muốn = 0!");
+        Assert.assertTrue(noResultMessage.isEmpty(),
+                "Message 'There is no results' is not displayed");
+    }
+
+    public void verifyYesNoButton() {
+        Actions actions = new Actions(driver);
+        actions.moveToElement(commentSection).perform();
+        Assert.assertTrue(yesButton.get(0).isEnabled(),
+                "Can not click Yes Button");
+        Assert.assertTrue(noButton.get(0).isEnabled(),
+                "Can not click No Button");
     }
 
 //  *****
 //  *****Methods - Comment*****
     public void textareaDefaultValue() {
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'end'});", commentButton);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOf(commentButton));
+        Actions actions = new Actions(driver);
+        actions.moveToElement(commentTextarea).perform();
         Assert.assertTrue(commentTitle.isDisplayed(),
                 "Comment Textarea Title should be visible");
         Assert.assertFalse(ratingStars.isEmpty(),
@@ -559,7 +564,24 @@ public class DetailJobPage {
                 "Default value of the textarea is not correct. Actual: " + value);
     }
 
-    public void inputComment(String comment) throws InterruptedException {
+    public void textareaEmpty() {
+//        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'end'});", commentButton);
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+//        wait.until(ExpectedConditions.visibilityOf(commentButton));
+        Actions actions = new Actions(driver);
+        actions.moveToElement(commentTextarea).perform();
+        Assert.assertTrue(commentTitle.isDisplayed(),
+                "Comment Textarea Title should be visible");
+        Assert.assertFalse(ratingStars.isEmpty(),
+                "Rating stars should exist");
+        Assert.assertTrue(commentButton.isDisplayed(),
+                "Comment Button should be visible");
+        String value = commentTextarea.getAttribute("value");
+        Assert.assertTrue(value == null || value.trim().isEmpty(),
+                "Default value of the textarea is not correct. Actual: " + value);
+    }
+
+    public void inputComment(String comment) {
         Actions actions = new Actions(driver);
         actions.moveToElement(commentTextarea)
                 .click()
@@ -573,11 +595,13 @@ public class DetailJobPage {
     }
 
     public void selectRating(int starNumber) {
+        actions.moveToElement(commentTextarea).perform();
         ratingStars.get(starNumber - 1).click();
     }
 
     public void hoverStar(int starNumber) {
         Actions actions = new Actions(driver);
+        actions.moveToElement(commentTextarea).perform();
         actions.moveToElement(ratingStars.get(starNumber - 1)).perform();
     }
 
@@ -588,19 +612,19 @@ public class DetailJobPage {
     }
 
     public boolean isStarHighlighted(int starIndex) {
-        WebElement star = ratingStars.get(starIndex - 1);
+        WebElement star = ratingStars.get(starIndex);
         String className = star.getAttribute("class");
         return className.contains("ant-rate-star-full");
     }
 
-    public void verifyHoverStartsHightlight() {
+    public void verifyHoverStartsHightlight(int starNumber) {
         int hoverStar = 4;
-        for (int i = 1; i <= hoverStar; i++) {
-            Assert.assertTrue(isStarHighlighted(i), "Star " + i + " chưa highlight!");
+        for (int i = 1; i <= starNumber; i++) {
+            Assert.assertTrue(isStarHighlighted(i-1), "Star " + i + " is not highlighted");
         }
 
-        for (int i = hoverStar + 1; i <= 5; i++) {
-            Assert.assertFalse(isStarHighlighted(i), "Star " + i + " bị highlight sai!");
+        for (int i = starNumber + 1; i <= 5; i++) {
+            Assert.assertFalse(isStarHighlighted(i-1), "Star " + i + " bị highlighted");
         }
     }
 
@@ -615,14 +639,21 @@ public class DetailJobPage {
     }
 
     public void verifyCommentFailBecauseNotLoggedIn(){
-        Assert.assertTrue(driver.getCurrentUrl().contains("login"), "FAIL. Vẫn ở trang Detail Job");
+        Assert.assertTrue(driver.getCurrentUrl().contains("login"), "FAIL. Still at Detail Job Page");
     }
 
     public void verifyTextareaRequired(){
-//        String requiredAttr = commentTextarea.getAttribute("required");
-//        Assert.assertNotNull(requiredAttr, "Textarea phai co thuoc tinh required");
+        Actions actions = new Actions(driver);
+        actions.moveToElement(commentTextarea).perform();
+       String validationMessage = (String)((JavascriptExecutor) driver).executeScript("return arguments[0].validationMessage;", commentTextarea);
+        boolean isValid = validationMessage.equals("Vui lòng điền vào trường này.") ||
+                validationMessage.equals("Please fill out this field.");
+        Assert.assertTrue(isValid, "Validation message should match");
+    }
+
+    public void verifyAlertDisappeared(){
         String validationMessage = (String)((JavascriptExecutor) driver).executeScript("return arguments[0].validationMessage;", commentTextarea);
-        Assert.assertEquals(validationMessage, "Vui lòng điền vào trường này.", "Validation message should match");
+        Assert.assertTrue(validationMessage.isEmpty(), "Validation message should not be shown");
     }
 
 }

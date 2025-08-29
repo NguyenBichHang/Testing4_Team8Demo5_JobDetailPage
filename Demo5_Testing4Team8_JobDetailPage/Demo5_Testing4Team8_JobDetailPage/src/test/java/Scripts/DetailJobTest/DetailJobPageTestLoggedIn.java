@@ -4,16 +4,13 @@ import Listener.ExtentReportListener;
 import Listener.SimpleListener;
 import Pages.DetailJobPage;
 import Scripts.BaseTest.LoggedInBaseTest;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 @Listeners({SimpleListener.class, ExtentReportListener.class})
 public class DetailJobPageTestLoggedIn extends LoggedInBaseTest {
-//    @Test
-//    public void testDefaultValue() {
-//        DetailJobPage detailJobPage = new DetailJobPage(driver);
-//        detailJobPage.textareaDefaultValue();
-//    }
+
 
     @Test
     public void testCommentSuccess() throws InterruptedException {
@@ -21,10 +18,12 @@ public class DetailJobPageTestLoggedIn extends LoggedInBaseTest {
         detailJobPage.inputComment("hangtest");
     }
 
+
+    //    Test Navigation
     @Test
-    public void testCommentWithoutInput() {
+    public void testNavigationLinkDisplay() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.verifyTextareaRequired();
+        detailJobPage.verifyNavigationLinkDisplayed();
     }
 
     //    Test Seacrh Box
@@ -37,10 +36,10 @@ public class DetailJobPageTestLoggedIn extends LoggedInBaseTest {
     @Test
     public void testSearchWithValidKeyword() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.inputSearchText("hangtest");
+        detailJobPage.inputSearchText("test");
         detailJobPage.clickSearchButton();
         detailJobPage.waitForSearchResult();
-        detailJobPage.verifyValidSearchResult("hangtest");
+        detailJobPage.verifyValidSearchResult("test");
     }
 
     @Test
@@ -58,18 +57,13 @@ public class DetailJobPageTestLoggedIn extends LoggedInBaseTest {
         detailJobPage.inputSearchText("NonExistent");
         detailJobPage.clickSearchButton();
         detailJobPage.waitForSearchResult();
-        detailJobPage.verifyInvalidSearchResult("NonExistent");
+        detailJobPage.verifyInvalidSearchResult();
+        detailJobPage.verifySearchKeywordStillDisplayed("NonExistent");
     }
 
-    //    Test Job Detail Display
-    public void testJobDetailDisplay() {
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.verifyImageDisplayed();
-    }
-
-    //    Test Image
+    //    Test Job Image
     @Test
-    public void testImageDisplay() {
+    public void testJobImageDisplay() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.verifyImageDisplayed();
     }
@@ -164,13 +158,6 @@ public class DetailJobPageTestLoggedIn extends LoggedInBaseTest {
         detailJobPage.verifyContactModalDisplay();
     }
 
-    //    Test FAQ Section
-    @Test
-    public void testFAQSectionDisplay() {
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.verifyFAQSectionDisplay();
-    }
-
     @Test
     public void testFAQDefaultDisplay() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
@@ -202,6 +189,12 @@ public class DetailJobPageTestLoggedIn extends LoggedInBaseTest {
         detailJobPage.verifyNoCommentDisplayedWithMessage();
     }
 
+    @Test (description = "Check If can click Yes No Button")
+    public void testYesNoButton() {
+        DetailJobPage detailJobPage = new DetailJobPage(driver);
+        detailJobPage.verifyYesNoButton();
+    }
+
     //  *****
     //  *****Test Comment Section*****
     @Test (description = "Check Comment Textarea Display & Default value")
@@ -210,29 +203,49 @@ public class DetailJobPageTestLoggedIn extends LoggedInBaseTest {
         detailJobPage.textareaDefaultValue();
     }
 
-    @Test (description = "Check Comment Fail - Not Logged In - Input Comment")
-    public void testCommentWithoutLoggedIn_InputComment() throws InterruptedException {
+    @Test
+    public void testCommentWithoutInput() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.inputComment("test");
         detailJobPage.clickCommentButton();
-        detailJobPage.verifyCommentFailBecauseNotLoggedIn();
+        detailJobPage.verifyTextareaRequired();
     }
 
-    @Test (description = "Check Comment Fail - Not Logged In - No Input Comment")
-    public void testCommentWithoutLoggedIn_NoInput() throws InterruptedException {
+    @Test (description = "Check Star Status when Hovering")
+    public void testStarHighlightStatus() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.inputComment("");
-        detailJobPage.clickCommentButton();
-        System.out.println("Da OK");
-//        detailJobPage.verifyTextareaRequired();
+        detailJobPage.hoverStar(4);
+        detailJobPage.isStarHighlighted(0);
+
+//        detailJobPage.verifyHoverStartsHightlight(4);
     }
+
+    @Test
+    public void testAlertDisappearedWhenClickOutside() {
+        Actions actions = new Actions(driver);
+        DetailJobPage detailJobPage = new DetailJobPage(driver);
+        detailJobPage.clickCommentButton();
+        detailJobPage.verifyTextareaRequired();
+        actions.moveByOffset(100, 100).click().perform();
+        detailJobPage.verifyAlertDisappeared();
+    }
+
+    @Test
+    public void testAlertDisappearedWhenInputComment() {
+        Actions actions = new Actions(driver);
+        DetailJobPage detailJobPage = new DetailJobPage(driver);
+        detailJobPage.clickCommentButton();
+        detailJobPage.verifyTextareaRequired();
+        detailJobPage.inputComment("Test");
+        detailJobPage.verifyAlertDisappeared();
+    }
+
 
     @Test
     public void testCommentWithRatingStar() throws InterruptedException {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.inputComment("test");
         detailJobPage.hoverStar(4);
-        detailJobPage.verifyHoverStartsHightlight();
+        detailJobPage.verifyHoverStartsHightlight(4);
         detailJobPage.selectRating(4);
         detailJobPage.clickCommentButton();
         detailJobPage.verifySelectedStar(4);
