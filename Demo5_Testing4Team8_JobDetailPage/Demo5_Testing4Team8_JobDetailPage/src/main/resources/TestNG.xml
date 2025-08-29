@@ -1,0 +1,102 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Suite">
+    <listeners>
+        <listener class-name="Listener.ExtentReportListener"></listener>
+        <listener class-name="Listener.SimpleListener"></listener>
+    </listeners>
+    <test name="TestAnzenkun">
+        <classes>
+<!--            <class name="Scripts.LoginTest" />-->
+<!--            <class name="Scripts.PasswordResetTest" />-->
+        </classes>
+    </test>
+</suite>
+
+
+        <!--① RUN TESTS BY CLASS｜クラスでテストを実行する-->
+        <!--説明：<test>タグ内の対象は<classes>タグです。<classes>タグにはテストを実行したいクラスのリストを記入します。名前は[packageName].[className]です。
+            現在は、こちらのファイルに[Scripts]というパッケージがあり、その内に[BaseTest][LoginTest][PasswordResetTest]というクラスが含まれています。
+            そのため、[LoginTest]クラスのみをテストしたい場合は、以下の通りに記述します-->
+        <!--<suite name="Suite">-->
+        <!--<test name="Test Name | 適当なテスト名">-->
+        <!--    <classes>-->
+        <!--        <class name="packageName.className" />-->
+        <!--        <class name="Scripts.LoginTest" （Example｜例）/>-->
+        <!--    </classes>-->
+        <!--</test>-->
+        <!--</suite>-->
+
+        <!--② RUN TESTS BY PACKAGE｜パッケージでテストを実行する-->
+        <!--説明：<test>タグ内の対象は<packages>タグです。<packages>タグにはテストを実行したいパッケージのリストを記入します。名前は[packageName]です。
+            現在は、こちらのファイルにテスト用のパッケージは[Scripts]のみがあるので、以下の記述方法を参照してください。-->
+        <!--<suite name="Suite">-->
+        <!--<test name="Test Name | 適当なテスト名">-->
+        <!--    <packages>-->
+        <!--        <package name="firstPackage" />-->
+        <!--        <package name="secondPackage" />-->
+        <!--        <package name="Scripts" （Example｜例）/>-->
+        <!--    </packages>-->
+        <!--</test>-->
+        <!--</suite>-->
+
+        <!--③ RUN TESTS BY METHOD｜メソッドでテストを実行する-->
+        <!--説明：こちらはクラス内の特定なテストケースをテストしたい場合に使われる記述方法です。特定なテストケース/メソッドが実行されるように、
+            <include>タグ内にメソッド名を記入する必要です。
+            例えば、[Scripts]パッケージの[LoginTest]クラスの中に、[testDefaultValue]というテストケースのみをテストしたい場合、以下の通りに記述します。-->
+        <!--<suite name="Suite">-->
+        <!--<test name="Test Name | 適当なテスト名">-->
+        <!--    <classes>-->
+        <!--        <class name="firstPackage.FirstClass">-->
+        <!--            <methods>-->
+        <!--                <include name="firstTest" />-->
+        <!--            </methods>-->
+        <!--    </class>-->
+        <!--        <class name="secondPackage.FirstClass">-->
+        <!--            <methods>-->
+        <!--                <include name="firstTest" />-->
+        <!--            </methods>-->
+        <!--    </class>（Example｜例）-->
+        <!--        <class name="Scripts.LoginTest">-->
+        <!--            <methods>-->
+        <!--                <include name="testDefaultValue" />-->
+        <!--            </methods>-->
+        <!--    </class>-->
+        <!--    </classes>-->
+        <!--</test>-->
+        <!--</suite>-->
+
+        <!--④ RUN TESTS BY PACKAGE, METHOD, CLASS｜パッケージ、クラス、メソッドを組み合わせてテストを実行する-->
+        <!--<suite name="Suite">-->
+        <!--<test name="Test Name - Combine Test | 適当なテスト名">-->
+        <!--    <packages>-->
+        <!--        <package name="firstPackage" />-->
+        <!--    </packages>-->
+        <!--    <classes>-->
+        <!--        <class name="secondPackage.FirstClass" />-->
+        <!--        <class name="thirdPackage.FirstClass">-->
+        <!--            <methods>-->
+        <!--                <include name="firstTest" />-->
+        <!--            </methods>-->
+        <!--        </class>-->
+        <!--<   /classes>-->
+        <!--</test>-->
+        <!--</suite>-->
+
+        <!--⑤ RUN TESTS USING INCLUDE, EXCLUDE｜INCLUDE, EXCLUDEを使用してテストを実行する-->
+        <!--説明：1つのクラスに多くのメソッドがあるが、いくつかのメソッドを実行したくない場合は、<exclude>タグを使用します-->
+        <!--<suite name="Suite">-->
+        <!--<test name="Exclude Method Test">
+        <!-     <classes>-->
+        <!--        <class name="packageName.className">-->
+        <!--            <methods>-->
+        <!--                <exclude name="methodName" />-->
+        <!--            </methods>-->
+        <!--        <class name="Scripts.LoginTest">（Example｜例）-->
+        <!--            <methods>-->
+        <!--                <exclude name="testDefaultValue" />-->
+        <!--            </methods>-->
+        <!--        </class>-->
+        <!--    </classes>-->
+        <!--</test>-->
+        <!--</suite>-->
