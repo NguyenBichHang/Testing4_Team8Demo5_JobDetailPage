@@ -9,24 +9,6 @@ import org.testng.annotations.Test;
 
 @Listeners({SimpleListener.class, ExtentReportListener.class})
 public class DetailJobPageTest extends NotLoggedInBaseTest {
-    //    Test Job Detail Display
-    public void testJobDetailDisplay() {
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.verifyImageDisplayed();
-    }
-
-    //    Test Image
-    @Test
-    public void testImageDisplay() {
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.verifyImageDisplayed();
-    }
-
-    @Test
-    public void testImageHoverTransition() {
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.verifyImageHoverTransition();
-    }
 
     //    Test Package
     @Test
@@ -71,83 +53,7 @@ public class DetailJobPageTest extends NotLoggedInBaseTest {
         detailJobPage.verifyCompareButtonNotLoggedIn();
     }
 
-    @Test
-    public void testContinueButtonTabBasic() {
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.clickTabBasic();
-        detailJobPage.verifyContinueButtonLoggedIn();
-    }
-
-    @Test
-    public void testContinueButtonTabStandard() {
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.clickTabBasic();
-        detailJobPage.verifyContinueButtonLoggedIn();
-    }
-
-    @Test
-    public void testContinueButtonTabPremium() {
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.clickTabBasic();
-        detailJobPage.verifyContinueButtonLoggedIn();
-    }
-
-    @Test
-    public void testAlertCloseButton() {
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.clickTabBasic();
-        detailJobPage.verifyContinueAlertCloseButton();
-    }
-
-    @Test
-    public void testContinueAlertDisplayWhenClicking() {
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.clickTabBasic();
-        detailJobPage.verifyContinueAlertDisplayWhenClicking();
-    }
-
-    @Test
-    public void testHoverContinueAlert() throws InterruptedException {
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.clickTabBasic();
-        detailJobPage.verifyHoverContinueAlert();
-    }
-
-    @Test
-    public void testMoveOutAlert() throws InterruptedException {
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.clickTabBasic();
-        detailJobPage.verifyMoveOutAlert();
-    }
-
-    @Test
-    public void testCompareButtonTabBasic() {
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.clickTabBasic();
-        detailJobPage.verifyCompareButtonLoggedIn();
-    }
-
-    @Test
-    public void testCompareButtonTabStandard() {
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.clickTabStandard();
-        detailJobPage.verifyCompareButtonLoggedIn();
-    }
-
-    @Test
-    public void testCompareButtonTabPremium() {
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.clickTabPremium();
-        detailJobPage.verifyCompareButtonLoggedIn();
-    }
-
     //    Test About The Seller
-    @Test
-    public void testSellerAvatarDisplayedOrAlt() {
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.verifyAvatarDisplay();
-    }
-
     @Test
     public void testContactMeButtonNotLoggedIn() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);

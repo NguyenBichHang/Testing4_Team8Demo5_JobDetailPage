@@ -5,7 +5,7 @@
         <listener class-name="Listener.ExtentReportListener"></listener>
         <listener class-name="Listener.SimpleListener"></listener>
     </listeners>
-    <test name="TestAnzenkun">
+    <test name="TestDemo5">
         <classes>
 <!--            <class name="Scripts.LoginTest" />-->
 <!--            <class name="Scripts.PasswordResetTest" />-->

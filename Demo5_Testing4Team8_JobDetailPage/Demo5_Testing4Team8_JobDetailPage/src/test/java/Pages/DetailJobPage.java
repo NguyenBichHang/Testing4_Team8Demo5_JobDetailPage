@@ -223,8 +223,6 @@ public class DetailJobPage {
         Assert.assertTrue(navigation1.isDisplayed(), "Link Navigation không hiển thị");
         Assert.assertTrue(navigation2.isDisplayed(), "Link Navigation không hiển thị");
         Assert.assertTrue(navigation3.isDisplayed(), "Link Navigation không hiển thị");
-//        String imageSrc = jobImage.getAttribute("src");
-//        Assert.assertFalse(imageSrc.isEmpty(), "Image source không được để trống");
     }
 //  *****
 //  *****Methods - Job Detail*****
@@ -275,12 +273,14 @@ public class DetailJobPage {
         }
 
     public void verifyContactMeButtonNotLoggedIn(){
-        contactMeButton.click();
+        Actions actions = new Actions(driver);
+        actions.moveToElement(contactMeButton).click().perform();
         Assert.assertTrue(driver.getCurrentUrl().contains("login"), "FAIL. Vẫn ở trang Job Detail");
     }
 
     public void verifyContactModalDisplay(){
-        contactMeButton.click();
+        Actions actions = new Actions(driver);
+        actions.moveToElement(contactMeButton).click().perform();
         Assert.assertTrue(contactModal.isDisplayed(),
                 "Contact Modal should be visible");
     }
@@ -294,10 +294,14 @@ public class DetailJobPage {
     }
 
     public void clickTabStandard(){
+        Assert.assertTrue(tabStandard.isDisplayed(),
+                "Tab Standard should be visible");
         tabStandard.click();
     }
 
     public void clickTabPremium(){
+        Assert.assertTrue(tabPremium.isDisplayed(),
+                "Tab Premium should be visible");
         tabPremium.click();
     }
 
@@ -363,7 +367,7 @@ public class DetailJobPage {
 
     public void verifyCompareButtonLoggedIn(){
         continueButton.click();
-        Assert.assertTrue(driver.getCurrentUrl().contains("compare"),
+        Assert.assertTrue(driver.getCurrentUrl().contains("comparepackage"),
                 "FAIL. Vẫn ở trang Job Detail");
     }
 //  *****

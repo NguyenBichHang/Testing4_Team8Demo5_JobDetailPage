@@ -39,29 +39,46 @@ public class ExtentReportListener implements ITestListener {
 
     public void onTestFailure(ITestResult result) {
         test.get().log(Status.FAIL, getTestDescription(result));
-//        test.get().log(Status.FAIL, getTestName(result) + result.getThrowable().toString());
-//        String screenshotPath = "./screenshots/" + result.getName() + ".png";
-//        test.get().addScreenCaptureFromPath(screenshotPath);
         try {
+//            Object currentClass = result.getInstance();
+//            WebDriver driver = ((LoggedInBaseTest) currentClass).getDriver();
             Object currentClass = result.getInstance();
-            WebDriver driver = ((LoggedInBaseTest) currentClass).getDriver();
+            WebDriver driver = null;
 
-//      Dùng Base64 thay vì file path
-            String base64Screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BASE64);
-            String customName = "Error_Screenshot_" + result.getMethod().getMethodName();
-            test.get().log(Status.FAIL, "Test result: " + result.getThrowable().getMessage());
-            test.get().log(Status.INFO, "📸 Screenshot Evidence: " , MediaEntityBuilder.createScreenCaptureFromBase64String(base64Screenshot).build());
-            ScreenshotManager.addDownloadableScreenshot(test.get(), driver, result.getMethod().getMethodName());
+            if (currentClass instanceof LoggedInBaseTest) {
+                driver = ((LoggedInBaseTest) currentClass).getDriver();
+            } else if (currentClass instanceof NotLoggedInBaseTest) {
+                driver = ((NotLoggedInBaseTest) currentClass).getDriver();
+            }
+            if (driver != null) {
+                String base64Screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BASE64);
+                String customName = "Error_Screenshot_" + result.getMethod().getMethodName();
+                test.get().log(Status.FAIL, "Test result: " + result.getThrowable().getMessage());
+                test.get().log(Status.INFO, "📸 Screenshot Evidence: " , MediaEntityBuilder.createScreenCaptureFromBase64String(base64Screenshot).build());
+                ScreenshotManager.addDownloadableScreenshot(test.get(), driver, result.getMethod().getMethodName());
+            }}
+         catch (Exception e) {
+            e.printStackTrace();}
 
-//        ScreenshotUtils.addDownloadableScreenshot(test.get(), driver, result.getMethod().getMethodName());
-//        ExtentTest screenshotNode = test.get().createNode("Screenshot Evidence");
-//        screenshotNode.info("Screenshot captured",
-//                MediaEntityBuilder.createScreenCaptureFromBase64String(base64Screenshot).build());
-        } catch (Exception e) {
-            e.printStackTrace();
+//            }
+//            if (driver != null) {
+//            if (currentClass instanceof LoggedInBaseTest) {
+//                driver = ((LoggedInBaseTest) currentClass).getDriver();
+//            } else if (currentClass instanceof NotLoggedInBaseTest) {
+//                driver = ((NotLoggedInBaseTest) currentClass).getDriver();
+//            }
+////      Dùng Base64 thay vì file path
+//            String base64Screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BASE64);
+//            String customName = "Error_Screenshot_" + result.getMethod().getMethodName();
+//            test.get().log(Status.FAIL, "Test result: " + result.getThrowable().getMessage());
+//            test.get().log(Status.INFO, "📸 Screenshot Evidence: " , MediaEntityBuilder.createScreenCaptureFromBase64String(base64Screenshot).build());
+//            ScreenshotManager.addDownloadableScreenshot(test.get(), driver, result.getMethod().getMethodName());
+//
+//        }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         }
-
-    }
 
     public void onTestSkipped(ITestResult result) {
         test.get().log(Status.SKIP, "Test Skipped");

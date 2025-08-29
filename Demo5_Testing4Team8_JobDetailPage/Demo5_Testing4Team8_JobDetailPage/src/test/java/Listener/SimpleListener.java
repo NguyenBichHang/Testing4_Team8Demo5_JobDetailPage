@@ -1,6 +1,7 @@
 package Listener;
 
 import Scripts.BaseTest.LoggedInBaseTest;
+import Scripts.BaseTest.NotLoggedInBaseTest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.OutputType;
@@ -26,21 +27,33 @@ public class SimpleListener implements ITestListener {
         log.error("Day la testcase bi fail" + result.getName());
         System.out.println("Screenshot captured for test case: " + result.getName());
 
+//        Object currentClass = result.getInstance();
+//        WebDriver driver = ((LoggedInBaseTest) currentClass).getDriver();
         Object currentClass = result.getInstance();
-        WebDriver driver = ((LoggedInBaseTest) currentClass).getDriver();
+        WebDriver driver = null;
 
-        File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-        try {
-            Date date = new Date();
-            String filePath = "." + File.separator + "screenshots" + File.separator + result.getName() + ".png";
-            File destFile = new File(filePath);
-            destFile.getParentFile().mkdirs();
-
-            FileHandler.copy(srcFile, destFile);
-            System.out.println("Screenshot saved: " + filePath);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (currentClass instanceof LoggedInBaseTest) {
+            driver = ((LoggedInBaseTest) currentClass).getDriver();
+        } else if (currentClass instanceof NotLoggedInBaseTest) {
+            driver = ((NotLoggedInBaseTest) currentClass).getDriver();
         }
+        if (driver != null) {
+
+            File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+            try {
+                Date date = new Date();
+                String filePath = "." + File.separator + "screenshots" + File.separator + result.getName() + ".png";
+                File destFile = new File(filePath);
+                destFile.getParentFile().mkdirs();
+
+                FileHandler.copy(srcFile, destFile);
+                System.out.println("Screenshot saved: " + filePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }}
+        }
+
+
 //        System.out.println("Screenshot captured for test case: " + result.getName());
 //
 //        Object currentClass = result.getInstance();
@@ -53,7 +66,7 @@ public class SimpleListener implements ITestListener {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-    }
+
 
     public void onTestSkipped(org.testng.ITestResult result) { /* compiled code */}
     public void onTestFailedButWithinSuccessPercentage(org.testng.ITestResult result) { /* compiled code */ }

@@ -31,6 +31,6 @@ public class NotLoggedInBaseTest{
     @AfterMethod
     public void tearDown () {
         driver.quit();
-        driver.close();
+//        driver.close();
     }
 }
