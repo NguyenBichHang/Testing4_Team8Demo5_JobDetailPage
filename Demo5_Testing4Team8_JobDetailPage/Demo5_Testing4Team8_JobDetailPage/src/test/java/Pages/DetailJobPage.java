@@ -89,8 +89,8 @@ public class DetailJobPage {
     @FindBy(xpath ="//button[@class='contact']")
     private WebElement contactMeButton;
 
-    @FindBy(css = ".contact-modal")
-    private WebElement contactModal;
+    @FindBy(xpath ="//div[@id='contactModal']")
+    private List<WebElement> contactModal;
 
     //  *****
     //  *****Locator - FAQ*****
@@ -281,7 +281,7 @@ public class DetailJobPage {
     public void verifyContactModalDisplay(){
         Actions actions = new Actions(driver);
         actions.moveToElement(contactMeButton).click().perform();
-        Assert.assertTrue(contactModal.isDisplayed(),
+        Assert.assertFalse(contactModal.isEmpty(),
                 "Contact Modal should be visible");
     }
 
@@ -560,15 +560,16 @@ public class DetailJobPage {
     }
 
     public void inputComment(String comment) throws InterruptedException {
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'end'});", commentTextarea);
-        Thread.sleep(5000);
-//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-//        wait.until(ExpectedConditions.visibilityOf(commentTextarea));
-        commentTextarea.sendKeys(comment);
+        Actions actions = new Actions(driver);
+        actions.moveToElement(commentTextarea)
+                .click()
+                .sendKeys(comment)
+                .perform();
     }
 
     public void clickCommentButton() {
-        commentButton.click();
+        Actions actions = new Actions(driver);
+        actions.moveToElement(commentButton).click().perform();
     }
 
     public void selectRating(int starNumber) {

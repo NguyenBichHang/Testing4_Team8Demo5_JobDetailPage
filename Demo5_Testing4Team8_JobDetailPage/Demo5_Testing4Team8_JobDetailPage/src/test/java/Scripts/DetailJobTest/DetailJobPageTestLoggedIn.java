@@ -159,12 +159,6 @@ public class DetailJobPageTestLoggedIn extends LoggedInBaseTest {
     }
 
     @Test
-    public void testContactMeButtonNotLoggedIn() {
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.verifyContactMeButtonNotLoggedIn();
-    }
-
-    @Test
     public void testContactModalDisplay() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.verifyContactModalDisplay();

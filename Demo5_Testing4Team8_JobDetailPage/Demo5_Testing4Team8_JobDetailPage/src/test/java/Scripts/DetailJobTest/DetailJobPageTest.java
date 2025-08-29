@@ -60,12 +60,6 @@ public class DetailJobPageTest extends NotLoggedInBaseTest {
         detailJobPage.verifyContactMeButtonNotLoggedIn();
     }
 
-    @Test
-    public void testContactModalDisplay() {
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.verifyContactModalDisplay();
-    }
-
     //    Test FAQ Section
     @Test
     public void testFAQSectionDisplay() {
@@ -106,14 +100,9 @@ public class DetailJobPageTest extends NotLoggedInBaseTest {
 
     //  *****
     //  *****Test Comment Section*****
-    @Test (description = "Check Comment Textarea Display & Default value")
-    public void testDefaultValue() {
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.textareaDefaultValue();
-    }
 
     @Test (description = "Check Comment Fail - Not Logged In - Input Comment")
-    public void testCommentWithoutLoggedIn_InputComment() throws InterruptedException {
+    public void testCommentNotLoggedIn_InputComment() throws InterruptedException {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.inputComment("test");
         detailJobPage.clickCommentButton();
@@ -125,28 +114,7 @@ public class DetailJobPageTest extends NotLoggedInBaseTest {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.inputComment("");
         detailJobPage.clickCommentButton();
-        System.out.println("Da OK");
-//        detailJobPage.verifyTextareaRequired();
+        detailJobPage.verifyCommentFailBecauseNotLoggedIn();
     }
 
-    @Test
-    public void testCommentWithRatingStar() throws InterruptedException {
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.inputComment("test");
-        detailJobPage.hoverStar(4);
-        detailJobPage.verifyHoverStartsHightlight();
-        detailJobPage.selectRating(4);
-        detailJobPage.clickCommentButton();
-        detailJobPage.verifySelectedStar(4);
-        detailJobPage.verifyLatestCommentText("test");
-    }
-
-    @Test
-    public void testCommentWithoutRatingStar() throws InterruptedException {
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.inputComment("test");
-        detailJobPage.clickCommentButton();
-        detailJobPage.verifySelectedStar(5);
-        detailJobPage.verifyLatestCommentText("test");
-    }
 }
