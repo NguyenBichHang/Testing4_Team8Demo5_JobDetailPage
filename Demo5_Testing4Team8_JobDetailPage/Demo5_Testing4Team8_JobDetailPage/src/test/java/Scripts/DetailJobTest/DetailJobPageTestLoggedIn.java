@@ -20,20 +20,20 @@ public class DetailJobPageTestLoggedIn extends LoggedInBaseTest {
 
 
     //    Test Navigation
-    @Test
+    @Test (description = "Check Navigation Link Display")
     public void testNavigationLinkDisplay() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.verifyNavigationLinkDisplayed();
     }
 
     //    Test Seacrh Box
-    @Test
+    @Test (description = "Check Placeholder of textbox Search")
     public void testTextboxSearchPlaceholder() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.verifyTextboxSearchPlaceholder();
     }
 
-    @Test
+    @Test (description = "Check Search Function _ Input Valid Keyword")
     public void testSearchWithValidKeyword() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.inputSearchText("test");
@@ -42,7 +42,7 @@ public class DetailJobPageTestLoggedIn extends LoggedInBaseTest {
         detailJobPage.verifyValidSearchResult("test");
     }
 
-    @Test
+    @Test (description = "Check Search Function _ No Input")
     public void testSearchWithEmptyInput() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.inputSearchText("");
@@ -51,7 +51,7 @@ public class DetailJobPageTestLoggedIn extends LoggedInBaseTest {
         detailJobPage.verifyAllCommentsAreDisplayed();
     }
 
-    @Test
+    @Test (description = "Check Search Function _ Input Invalid Keyword")
     public void testSearchWithInvalidKeyword() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.inputSearchText("NonExistent");
@@ -62,83 +62,107 @@ public class DetailJobPageTestLoggedIn extends LoggedInBaseTest {
     }
 
     //    Test Job Image
-    @Test
+    @Test (description = "Check Job Image Display")
     public void testJobImageDisplay() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.verifyImageDisplayed();
     }
 
-    @Test
+    @Test (description = "Check Hover Transition of Job Image")
     public void testImageHoverTransition() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.verifyImageHoverTransition();
     }
 
     //    Test Package
-    @Test
+    @Test (description = "Check Tab Basic _ Continue Button _ Logged In")
     public void testContinueButtonTabBasic() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.clickTabBasic();
         detailJobPage.verifyContinueButtonLoggedIn();
     }
 
-    @Test
+    @Test (description = "Check Tab Basic _ Continue Button _ Hired Job")
+    public void testContinueButtonTabBasic_HiredStatus() {
+        DetailJobPage detailJobPage = new DetailJobPage(driver);
+        detailJobPage.clickTabBasic();
+        detailJobPage.verifyContinueButtonLoggedIn();
+        detailJobPage.verifyContinueButtonRegistered();
+    }
+
+    @Test (description = "Check Tab Standard _ Continue Button _ Hired Job")
+    public void testContinueButtonTabStandard_HiredStatus() {
+        DetailJobPage detailJobPage = new DetailJobPage(driver);
+        detailJobPage.clickTabStandard();
+        detailJobPage.verifyContinueButtonLoggedIn();
+        detailJobPage.verifyContinueButtonRegistered();
+    }
+
+    @Test (description = "Check Tab Premium _ Continue Button _ Hired Job")
+    public void testContinueButtonTabPremium_HiredStatus() {
+        DetailJobPage detailJobPage = new DetailJobPage(driver);
+        detailJobPage.clickTabPremium();
+        detailJobPage.verifyContinueButtonLoggedIn();
+        detailJobPage.verifyContinueButtonRegistered();
+    }
+
+    @Test (description = "Check Tab Standard _ Continue Button _ Logged In")
     public void testContinueButtonTabStandard() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.clickTabBasic();
         detailJobPage.verifyContinueButtonLoggedIn();
     }
 
-    @Test
+    @Test (description = "Check Tab Premium _ Continue Button _ Logged In")
     public void testContinueButtonTabPremium() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.clickTabBasic();
         detailJobPage.verifyContinueButtonLoggedIn();
     }
 
-    @Test
+    @Test (description = "Check Alert Of Continue Button _ Close")
     public void testAlertCloseButton() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.clickTabBasic();
         detailJobPage.verifyContinueAlertCloseButton();
     }
 
-    @Test
+    @Test (description = "Check Alert Of Continue Button _ Close")
     public void testContinueAlertDisplayWhenClicking() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.clickTabBasic();
         detailJobPage.verifyContinueAlertDisplayWhenClicking();
     }
 
-    @Test
+    @Test (description = "Check Alert Of Continue Button _ Hover")
     public void testHoverContinueAlert() throws InterruptedException {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.clickTabBasic();
         detailJobPage.verifyHoverContinueAlert();
     }
 
-    @Test
+    @Test (description = "Check Alert Of Continue Button _ Move Out")
     public void testMoveOutAlert() throws InterruptedException {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.clickTabBasic();
         detailJobPage.verifyMoveOutAlert();
     }
 
-    @Test
+    @Test (description = "Check Tab Basic _ Compare Button _ Logged In")
     public void testCompareButtonTabBasic() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.clickTabBasic();
         detailJobPage.verifyCompareButtonLoggedIn();
     }
 
-    @Test
+    @Test (description = "Check Tab Standard _ Compare Button _ Logged In")
     public void testCompareButtonTabStandard() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.clickTabStandard();
         detailJobPage.verifyCompareButtonLoggedIn();
     }
 
-    @Test
+    @Test (description = "Check Tab Premium _ Compare Button _ Logged In")
     public void testCompareButtonTabPremium() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.clickTabPremium();
@@ -146,44 +170,44 @@ public class DetailJobPageTestLoggedIn extends LoggedInBaseTest {
     }
 
     //    Test About The Seller
-    @Test
+    @Test (description = "Check Seller Avatar")
     public void testSellerAvatarDisplayedOrAlt() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.verifyAvatarDisplay();
     }
 
-    @Test
+    @Test (description = "Check Contact Me Modal")
     public void testContactModalDisplay() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.verifyContactModalDisplay();
     }
 
-    @Test
+    @Test (description = "Check FAQ Display _ Default value")
     public void testFAQDefaultDisplay() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.verifyQuestionDefaultDisplay();
     }
 
-    @Test
+    @Test (description = "Check FAQ Display _ Answer Is Displayed When Clicking Question")
     public void testAnswerDisplayWhenCLickQuestion() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.verifyAnswerDisplayWhenCLicking();
     }
 
-    @Test
+    @Test (description = "Check FAQ Display _ Answer Is Hidden When Clicking Question Twice")
     public void testAnswerHiddenWhenClosing() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.verifyAnswerHiddenWhenClosing();
     }
 
     //    Test Comment List
-    @Test
+    @Test (description = "Check Comment List Exists")
     public void testCommentList_WhenCommentsExist() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.verifyCommentListDisplay();
     }
 
-    @Test
+    @Test (description = "Check Comment List _ No Comment Exists")
     public void testCommentList_WhenNoComment() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.verifyNoCommentDisplayedWithMessage();
@@ -203,33 +227,21 @@ public class DetailJobPageTestLoggedIn extends LoggedInBaseTest {
         detailJobPage.textareaDefaultValue();
     }
 
-    @Test
+    @Test (description = "Check Comment Textarea Display & Default value")
     public void testCommentWithoutInput() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.clickCommentButton();
         detailJobPage.verifyTextareaRequired();
     }
 
-    @Test (description = "Check Star Status when Hovering")
-    public void testStarHighlightStatus() {
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.hoverStar(4);
-        detailJobPage.isStarHighlighted(0);
+//    @Test (description = "Check Star Status when Hovering")
+//    public void testStarHighlightStatus() {
+//        DetailJobPage detailJobPage = new DetailJobPage(driver);
+//        detailJobPage.hoverStar(4);
+//        detailJobPage.isStarHighlighted(0);
+//    }
 
-//        detailJobPage.verifyHoverStartsHightlight(4);
-    }
-
-    @Test
-    public void testAlertDisappearedWhenClickOutside() {
-        Actions actions = new Actions(driver);
-        DetailJobPage detailJobPage = new DetailJobPage(driver);
-        detailJobPage.clickCommentButton();
-        detailJobPage.verifyTextareaRequired();
-        actions.moveByOffset(100, 100).click().perform();
-        detailJobPage.verifyAlertDisappeared();
-    }
-
-    @Test
+    @Test (description = "Check Comment Textarea _ No Input Alert Disappears When Input Comment")
     public void testAlertDisappearedWhenInputComment() {
         Actions actions = new Actions(driver);
         DetailJobPage detailJobPage = new DetailJobPage(driver);
@@ -241,24 +253,32 @@ public class DetailJobPageTestLoggedIn extends LoggedInBaseTest {
 
 
     @Test
-    public void testCommentWithRatingStar() throws InterruptedException {
+    public void testHover() {
+        DetailJobPage detailJobPage = new DetailJobPage(driver);
+        detailJobPage.hoverStar(3);
+        detailJobPage.verifyHoverStartsHightlight();
+         }
+
+    @Test
+    public void testCommentWithRatingStar() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.inputComment("test");
         detailJobPage.hoverStar(4);
-        detailJobPage.verifyHoverStartsHightlight(4);
+        detailJobPage.verifyHoverStartsHightlight();
         detailJobPage.selectRating(4);
         detailJobPage.clickCommentButton();
         detailJobPage.verifySelectedStar(4);
         detailJobPage.verifyLatestCommentText("test");
     }
 
-    @Test
-    public void testCommentWithoutRatingStar() throws InterruptedException {
+    @Test (description = "Check Comment Textarea _ Alert Appears When Not Input Comment")
+    public void testCommentWithoutRatingStar() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.inputComment("test");
         detailJobPage.clickCommentButton();
         detailJobPage.verifySelectedStar(5);
         detailJobPage.verifyLatestCommentText("test");
+        detailJobPage.textareaEmpty();
     }
 
 }

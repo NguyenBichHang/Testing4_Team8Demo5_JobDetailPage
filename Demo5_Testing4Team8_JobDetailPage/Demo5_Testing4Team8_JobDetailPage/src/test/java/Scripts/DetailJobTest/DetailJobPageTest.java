@@ -11,42 +11,42 @@ import org.testng.annotations.Test;
 public class DetailJobPageTest extends NotLoggedInBaseTest {
 
     //    Test Package
-    @Test
+    @Test (description = "Check Tab Basic _ Continue Button _ Not Logged In")
     public void testContinueButtonTabBasicNotLoggedIn() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.clickTabBasic();
         detailJobPage.verifyContinueButtonNotLoggedIn();
     }
 
-    @Test
+    @Test (description = "Check Tab Standard _ Continue Button _ Not Logged In")
     public void testContinueButtonTabStandardNotLoggedIn() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.clickTabStandard();
         detailJobPage.verifyContinueButtonNotLoggedIn();
     }
 
-    @Test
+    @Test (description = "Check Tab Premium _ Continue Button _ Not Logged In")
     public void testContinueButtonTabPremiumNotLoggedIn() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.clickTabPremium();
         detailJobPage.verifyContinueButtonNotLoggedIn();
     }
 
-    @Test
+    @Test (description = "Check Tab Basic _ CompareButton _ Not Logged In")
     public void testCompareButtonTabBasicNotLoggedIn() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.clickTabBasic();
         detailJobPage.verifyCompareButtonNotLoggedIn();
     }
 
-    @Test
+    @Test (description = "Check Tab Standard _ CompareButton _ Not Logged In")
     public void testCompareButtonTabStandardNotLoggedIn() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.clickTabStandard();
         detailJobPage.verifyCompareButtonNotLoggedIn();
     }
 
-    @Test
+    @Test (description = "Check Tab Premium _ CompareButton _ Not Logged In")
     public void testCompareButtonTabPremiumNotLoggedIn() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.clickTabPremium();
@@ -54,7 +54,7 @@ public class DetailJobPageTest extends NotLoggedInBaseTest {
     }
 
     //    Test About The Seller
-    @Test
+    @Test (description = "Check Contact Me Button _ Not Logged In")
     public void testContactMeButtonNotLoggedIn() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.verifyContactMeButtonNotLoggedIn();

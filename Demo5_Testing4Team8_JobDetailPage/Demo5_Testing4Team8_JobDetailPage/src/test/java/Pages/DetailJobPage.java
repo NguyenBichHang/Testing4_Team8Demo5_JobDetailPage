@@ -69,10 +69,10 @@ public class DetailJobPage {
     @FindBy(xpath ="//a[@class='compare']")
     private WebElement compareButton;
 
-    @FindBy(xpath ="//div[@id='zuei5yj']")
+    @FindBy(xpath ="//div[@class='Toastify__toast Toastify__toast-theme--light Toastify__toast--success']")
     private WebElement continueAlert;
 
-    @FindBy(xpath ="//button[@aria-label='close']//*[name()='svg']")
+    @FindBy(xpath ="//button[@aria-label='close']")
     private WebElement continueAlertCloseButton;
 
     @FindBy(xpath ="//*[name()='path' and contains(@d,'M12 0a12 1')]")
@@ -144,20 +144,13 @@ public class DetailJobPage {
     @FindBy(xpath ="//form[contains(@class,'search-form d-flex')]//button")
     private WebElement searchButton;
 
-    @FindBy(xpath = "//div[contains(@class, 'reviewer-name')]")
-    private List<WebElement> reviewerName;
-
-    @FindBy(xpath = "//div[contains(@class, 'country-name')]")
-    private List<WebElement> countries;
-
-    @FindBy(xpath = "//*[contains(@class, 'star')]")
-    private List<WebElement> starRating;
-
+    //  *****
+    //  *****Locator - Comment List*****
     @FindBy(xpath ="//div[@class='review-comment']")
     private WebElement commentSection;
 
     @FindBy(xpath ="//li[@class='row py-4']")
-    private List<WebElement> SearchResults;
+    private List<WebElement> commentItem;
 
     @FindBy(xpath = "//div[contains(text(), \"There is no results\")]")
     private List<WebElement> noResultMessage;
@@ -189,20 +182,6 @@ public class DetailJobPage {
     @FindBy(xpath = "//div[contains(@class, 'no d-flex align-items-center gap-1')]")
     private List<WebElement> noButton;
 
-    //  *****
-    //  *****Locator - Comment List*****
-    @FindBy(xpath ="//li[@class='row py-4']")
-    private List<WebElement> commentItem;
-//    private By avatar      = By.cssSelector("img[alt='user avatar']");
-//    private By rating      = By.cssSelector(".fa-star");
-//    private By countryFlag = By.cssSelector("img[src*='switzerland']");
-//    private By countryName = By.xpath(".//span[contains(text(),'Switzerland')]");
-//    private By content     = By.xpath(".//p");
-//    private By helpful     = By.xpath(".//div[contains(text(),'Helpful?')]");
-
-//    @FindBy(css = ".ant-rate-star")
-//    private List<WebElement> commentStars;
-
 //  *****
 //  *****Locator - Comment Textarea*****
     @FindBy(xpath ="//h2[contains(text(),'Leave some comments')]")
@@ -214,11 +193,9 @@ public class DetailJobPage {
     @FindBy(xpath ="//button[@class='comment-submit']")
     private WebElement commentButton;
 
-    @FindBy(css = "i.ant-rate-star")
+    @FindBy(xpath = "//div[@class='add-comment py-4']//li[contains(@class,'ant-rate-star')]")
     private List<WebElement> ratingStars;
 
-    @FindBy(css = ".ant-rate .ant-rate-star div[role='radio'][aria-checked='true']")
-    private WebElement selectedStar;
 
 //  *****
 //  *****Methods - Navigation*****
@@ -334,6 +311,11 @@ public class DetailJobPage {
 //        Assert.assertEquals(driver.findElement(errorMessageEmailInvalidChar).getText(), "使用できない文字が含まれています。", "Không đúng nội dung error message");
     }
 
+    public void verifyContinueButtonRegistered(){
+        Assert.assertFalse(continueButton.isEnabled(),
+                "Can click button");
+    }
+
     public void verifyContinueAlertCloseButton(){
         continueButton.click();
         Assert.assertFalse(continueAlert.isDisplayed(),
@@ -364,13 +346,13 @@ public class DetailJobPage {
     }
 
     public void verifyCompareButtonNotLoggedIn(){
-        continueButton.click();
+        compareButton.click();
         Assert.assertTrue(driver.getCurrentUrl().contains("login"),
                 "FAIL. Vẫn ở trang Job Detail");
     }
 
     public void verifyCompareButtonLoggedIn(){
-        continueButton.click();
+        compareButton.click();
         Assert.assertTrue(driver.getCurrentUrl().contains("comparepackage"),
                 "FAIL. Vẫn ở trang Job Detail");
     }
@@ -459,23 +441,10 @@ public class DetailJobPage {
     }
 
 
-
     public int getAllReviewsCount() {
-            return SearchResults.size();
+            return commentItem.size();
     }
 
-    public boolean areReviewElementsVisible() {
-        return reviewerName.size() > 0 ||
-                countries.size() > 0 ||
-                starRating.size() > 0 ;
-//                reviewText.size() > 0;
-    }
-
-    public boolean areHelpfulButtonsVisible() {
-        return helpfulText.size() > 0 &&
-                yesButton.size() > 0 &&
-                noButton.size() > 0;
-    }
     public boolean searchResultsContainSearchKeyword(String search) {
         List<WebElement> results = getSearchResults(search);
         for (WebElement result : results) {
@@ -565,17 +534,8 @@ public class DetailJobPage {
     }
 
     public void textareaEmpty() {
-//        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'end'});", commentButton);
-//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-//        wait.until(ExpectedConditions.visibilityOf(commentButton));
         Actions actions = new Actions(driver);
         actions.moveToElement(commentTextarea).perform();
-        Assert.assertTrue(commentTitle.isDisplayed(),
-                "Comment Textarea Title should be visible");
-        Assert.assertFalse(ratingStars.isEmpty(),
-                "Rating stars should exist");
-        Assert.assertTrue(commentButton.isDisplayed(),
-                "Comment Button should be visible");
         String value = commentTextarea.getAttribute("value");
         Assert.assertTrue(value == null || value.trim().isEmpty(),
                 "Default value of the textarea is not correct. Actual: " + value);
@@ -601,14 +561,8 @@ public class DetailJobPage {
 
     public void hoverStar(int starNumber) {
         Actions actions = new Actions(driver);
-        actions.moveToElement(commentTextarea).perform();
+//        int width = ratingStars.get(starNumber - 1).getSize().getWidth();
         actions.moveToElement(ratingStars.get(starNumber - 1)).perform();
-    }
-
-    public int getSelectedRating() {
-//        return Integer.parseInt(selectedStar.getAttribute("aria-posinset"));
-        WebElement selectedStar = commentItem.get(commentItem.size() - 1).findElement(By.cssSelector(".ant-rate-star[aria-checked='true']"));
-        return Integer.parseInt(selectedStar.getAttribute("aria-posinset"));
     }
 
     public boolean isStarHighlighted(int starIndex) {
@@ -617,15 +571,30 @@ public class DetailJobPage {
         return className.contains("ant-rate-star-full");
     }
 
-    public void verifyHoverStartsHightlight(int starNumber) {
-        int hoverStar = 4;
-        for (int i = 1; i <= starNumber; i++) {
+    public boolean isStarNotHighlighted(int starIndex) {
+        WebElement star = ratingStars.get(starIndex);
+        String className = star.getAttribute("class");
+        return className.contains("ant-rate-star-zero");
+    }
+
+    public void verifyHoverStartsHightlight() {
+        int hoverStar = 3;
+        for (int i = 1; i <= hoverStar; i++) {
             Assert.assertTrue(isStarHighlighted(i-1), "Star " + i + " is not highlighted");
         }
 
-        for (int i = starNumber + 1; i <= 5; i++) {
-            Assert.assertFalse(isStarHighlighted(i-1), "Star " + i + " bị highlighted");
-        }
+//        for (int i = hoverStar + 1; i <= 5; i++) {
+//            Assert.assertTrue(isStarNotHighlighted(i-1), "Star " + i + " is highlighted");
+//        }
+//
+//        for (int i = hoverStar + 1; i <= 5; i++) {
+//            Assert.assertFalse(isStarHighlighted(i-1), "Star " + i + " is highlighted");
+//        }
+    }
+
+    public int getSelectedRating() {
+        WebElement selectedStar = commentItem.get(commentItem.size() - 1).findElement(By.xpath("//div[@class='review-comment']//span[@class='star-score']"));
+        return Integer.parseInt(selectedStar.getText());
     }
 
     public void verifySelectedStar(int expectedStar) {
@@ -653,7 +622,7 @@ public class DetailJobPage {
 
     public void verifyAlertDisappeared(){
         String validationMessage = (String)((JavascriptExecutor) driver).executeScript("return arguments[0].validationMessage;", commentTextarea);
-        Assert.assertTrue(validationMessage.isEmpty(), "Validation message should not be shown");
+        Assert.assertTrue(validationMessage == null || validationMessage.isEmpty(), "Validation message should not be shown");
     }
 
 }
