@@ -28,7 +28,7 @@ public class LoggedInBaseTest {
         driver.get("https://demo5.cybersoft.edu.vn/login");
         loginPage.login("bichhanghbn@gmail.com","bichhang777#");
         log.info("Da login thanh cong");
-        driver.navigate().to("https://demo5.cybersoft.edu.vn/jobDetail/5");
+        driver.navigate().to("https://demo5.cybersoft.edu.vn/jobDetail/14");
         log.info("Da truy cap trang Job Detail");
     }
 

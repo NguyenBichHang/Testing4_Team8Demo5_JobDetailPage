@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ProfilePage {
     WebDriver driver;
-    Actions actions;
+    private Actions actions;
 
     public ProfilePage(WebDriver driver) {
         this.driver = driver;

@@ -24,7 +24,7 @@ public class NotLoggedInBaseTest{
         driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(60));
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(60));
         driver.manage().window().maximize();
-        driver.get("https://demo5.cybersoft.edu.vn/jobDetail/5");
+        driver.get("https://demo5.cybersoft.edu.vn/jobDetail/14");
         log.info("Da truy cap trang Job Detail");
     }
 

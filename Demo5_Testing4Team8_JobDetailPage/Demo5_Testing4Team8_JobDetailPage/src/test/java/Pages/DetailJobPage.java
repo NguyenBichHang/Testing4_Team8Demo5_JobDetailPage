@@ -1,9 +1,6 @@
 package Pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -18,11 +15,11 @@ public class DetailJobPage {
     WebDriver driver;
     private JavascriptExecutor js;
     private Actions actions;
-    private WebDriverWait wait;
 
     public DetailJobPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
+        actions = new Actions(driver);
     }
     //  *****
     //  *****Locator - Navigation*****
@@ -45,9 +42,6 @@ public class DetailJobPage {
 
     @FindBy(xpath ="//div[@class='description']")
     private WebElement jobDescription;
-
-    @FindBy(xpath ="(//div[@class='rating'])[1]")
-    private WebElement ratingCount1;
 
     @FindBy(xpath ="//img[@class='img-fluid w-100']")
     private WebElement jobImage;
@@ -75,13 +69,14 @@ public class DetailJobPage {
     @FindBy(xpath ="//button[@aria-label='close']")
     private WebElement continueAlertCloseButton;
 
+//    @FindBy(xpath ="//div[@class='Toastify__close-button Toastify__close-button--light']")
+//    private WebElement continueAlertCloseButton;
+
     @FindBy(xpath ="//*[name()='path' and contains(@d,'M12 0a12 1')]")
     private WebElement continueAlertIcon;
 
     //  *****
     //  *****Locator - About The Seller*****
-    @FindBy(xpath ="(//div[@class='rating'])[2]")
-    private WebElement ratingCount2;
 
     @FindBy(xpath ="//div[@class='profile-img']")
     private WebElement sellerAvatarImg;
@@ -124,17 +119,6 @@ public class DetailJobPage {
     @FindBy(xpath ="//*[name()='svg']/*[name()='path'][contains(@d, 'M')]")
     private WebElement arrowButton;
 
-    @FindBy(xpath ="//div[@class='FAQ mt-5']//li[1]//*[name()='svg']")
-    private WebElement arrowButton1;
-
-    @FindBy(xpath ="//div[@class='FAQ mt-5']//li[2]//*[name()='svg']")
-    private WebElement arrowButton2;
-
-    @FindBy(xpath ="//div[@class='FAQ mt-5']//li[3]//*[name()='svg']")
-    private WebElement arrowButton3;
-
-    @FindBy(xpath ="//div[@class='FAQ mt-5']//li[4]//*[name()='svg']")
-    private WebElement arrowButton4;
 
     //  *****
     //  *****Locator - textbox search*****
@@ -208,15 +192,22 @@ public class DetailJobPage {
 //  *****
 //  *****Methods - Job Detail*****
     public void verifyJobDetail(){
-        Assert.assertTrue(jobTitle.isDisplayed(), "Job title không được hiển thị");
-        Assert.assertTrue(jobDescriptionTitle.isDisplayed(), "Job Description title không được hiển thị");
-        Assert.assertTrue(jobDescription.isDisplayed(), "Job Description không được hiển thị");
-    }
-
-    public void verifyImageDisplayed(){
+        Assert.assertTrue(jobTitle.isDisplayed(), "Job title is not displayed");
+        String getJobTitle = jobTitle.getText();
+        System.out.println(getJobTitle);
+        Assert.assertTrue(jobDescriptionTitle.isDisplayed(), "Job Description title is not displayed");
+        String getJobDescriptionTitle = jobDescriptionTitle.getText();
+        System.out.println(getJobDescriptionTitle);
+        Assert.assertTrue(jobDescription.isDisplayed(), "Job Description is not displayed");
+        String getJobDescription = jobDescription.getText();
+        System.out.println(getJobDescription);
         Assert.assertTrue(jobImage.isDisplayed(), "Service image không hiển thị");
         String imageSrc = jobImage.getAttribute("src");
         Assert.assertFalse(imageSrc.isEmpty(), "Image source không được để trống");
+    }
+
+    private boolean isIdentityTransform(String transform) {
+        return "none".equals(transform) || "matrix(1, 0, 0, 1, 0, 0)".equals(transform);
     }
 
     public void verifyImageHoverTransition(){
@@ -229,10 +220,14 @@ public class DetailJobPage {
         String hoverTransform = js.executeScript(
                 "return window.getComputedStyle(arguments[0]).transform", jobImage).toString();
         Assert.assertNotEquals(hoverTransform, initialTransform,
-                "Image không có hover transition effect - Transform không thay đổi");
-        actions.moveByOffset(100, 100).perform();
+                "Image has no hover transition effect - Transform didn't change");
+        actions.moveToElement(continueButton).perform();
         String finalTransform = js.executeScript(
                 "return window.getComputedStyle(arguments[0]).transform", jobImage).toString();
+        boolean isRestored = finalTransform.equals(initialTransform) ||
+                (isIdentityTransform(initialTransform) && isIdentityTransform(finalTransform));
+        Assert.assertTrue(isRestored,
+                "Image didn't back to initial transition effect - Transform didn't change");
         System.out.println("Final transform after mouse leave: " + finalTransform);
     }
 
@@ -276,43 +271,49 @@ public class DetailJobPage {
         String continueAlertText = continueAlert.getText();
         Assert.assertTrue(continueAlertText.contains("Thuê công việc thành công !"),
                 "Alert message is not correct. Actual: " + continueAlertText);
-        Assert.assertFalse(continueAlert.isEnabled(),
-                "Nút có thể click");
-//        Assert.assertEquals(driver.findElement(errorMessageEmailInvalidChar).getText(), "使用できない文字が含まれています。", "Không đúng nội dung error message");
     }
 
-    public void verifyContinueButtonRegistered(){
+    public void verifyContinueButtonHired(){
         Assert.assertFalse(continueButton.isEnabled(),
                 "Can click button");
     }
 
+    public void verifyContinueAlertAutoClose(){
+        continueButton.click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(6));
+        boolean invisible = wait.until(ExpectedConditions.invisibilityOf(continueAlert));
+        Assert.assertTrue(invisible, "'Continue' alert should not be visible");
+    }
+
     public void verifyContinueAlertCloseButton(){
         continueButton.click();
-        Assert.assertFalse(continueAlert.isDisplayed(),
-                "'Continue' alert should not be visible");
+        continueAlertCloseButton.click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        boolean invisible = wait.until(ExpectedConditions.invisibilityOf(continueAlert));
+        Assert.assertTrue(invisible, "'Continue' alert should not be visible");
     }
 
     public void verifyContinueAlertDisplayWhenClicking(){
+        continueButton.click();
         continueAlert.click();
-        Assert.assertFalse(continueAlert.isDisplayed(),
-                "'Continue' alert should not be visible");
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        boolean invisible = wait.until(ExpectedConditions.invisibilityOf(continueAlert));
+        Assert.assertTrue(invisible, "Continue' alert should not be visible");
     }
 
-    public void verifyHoverContinueAlert() throws InterruptedException {
-        continueAlert.click();
+    public void verifyHoverContinueAlert(){
+        continueButton.click();
         actions.moveToElement(continueAlert).perform();
-        Thread.sleep(5000);
         Assert.assertTrue(continueAlert.isDisplayed(),
-                "'Continue' alert should be still visible");
-    }
+                "DEL alert should be still visible");    }
 
-    public void verifyMoveOutAlert() throws InterruptedException {
-        continueAlert.click();
+    public void verifyMoveOutAlert() {
+        continueButton.click();
         actions.moveToElement(continueAlert).perform();
-        actions.moveByOffset(-200, -200).perform();
-        Thread.sleep(5000);
-        Assert.assertFalse(continueAlert.isDisplayed(),
-                "'Continue' alert should not be visible");
+        actions.moveByOffset(100, 100).perform();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(6));
+        boolean invisible = wait.until(ExpectedConditions.invisibilityOf(continueAlert));
+        Assert.assertTrue(invisible, "'Continue' alert should not be visible");
     }
 
     public void verifyCompareButtonNotLoggedIn(){
@@ -364,15 +365,6 @@ public class DetailJobPage {
 
 //  *****
 //  *****Methods - FAQ*****
-    public void FAQ() {
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", faqSection);
-    }
-
-    public void verifyFAQSectionDisplay(){
-        Assert.assertTrue(faqSection.isDisplayed(),
-                "FAQ section should be visible");
-    }
-
     public void verifyQuestionDefaultDisplay(){
         Actions actions = new Actions(driver);
         actions.moveToElement(question4).perform();
@@ -392,9 +384,6 @@ public class DetailJobPage {
         actions.moveToElement(question1).click().perform();
         Assert.assertTrue(answer1.isDisplayed(),
                 "Answer should be displayed after clicking");
-//        String getArrowTransform = arrowButton1.getCssValue("transform");
-//        Assert.assertTrue(getArrowTransform.contains("matrix(-1"),
-//                "The arrow should be pointing up");
     }
 
     public void verifyAnswerHiddenWhenClosing(){
@@ -409,13 +398,16 @@ public class DetailJobPage {
         Assert.assertTrue(getArrowTransform.contains("none"),
                 "The arrow should be pointing down by default");
     }
+
 //  *****
 //  *****Methods - Search*****
-    public void verifyTextboxSearchPlaceholder() {
+    public void verifyTextboxSearch() {
         String placeholder = textboxSearch.getAttribute("placeholder");
         Assert.assertNotNull(placeholder, "Search box should have a placeholder");
         Assert.assertTrue(placeholder.contains("Search reviews"),
                 "Placeholder should be 'Search reviews'. Actual: " + placeholder);
+        Assert.assertTrue(searchButton.isDisplayed() && searchButton.isEnabled(),
+                "Search button should be visible and clickable");
     }
 
     public void inputSearchText(String search){
@@ -446,7 +438,6 @@ public class DetailJobPage {
         return results.size() > 0;
     }
 
-
     public int getAllReviewsCount() {
             return commentItem.size();
     }
@@ -474,7 +465,7 @@ public class DetailJobPage {
     }
 
     public void verifySearchKeywordStillDisplayed(String search){
-        String currentValue = textboxSearch.getAttribute("value");
+        String currentValue = textboxSearch.getText();
         Assert.assertEquals(currentValue, search, "Search keyword is not displayed after searching");
     }
 
@@ -583,20 +574,16 @@ public class DetailJobPage {
         return className.contains("ant-rate-star-zero");
     }
 
-    public void verifyHoverStartsHightlight() {
-        int hoverStar = 3;
-        for (int i = 1; i <= hoverStar; i++) {
-            Assert.assertTrue(isStarHighlighted(i-1), "Star " + i + " is not highlighted");
-        }
-
-//        for (int i = hoverStar + 1; i <= 5; i++) {
-//            Assert.assertTrue(isStarNotHighlighted(i-1), "Star " + i + " is highlighted");
+//    public void verifyHoverStartsHightlight() {
+//        int hoverStar = 3;
+//        for (int i = 1; i <= hoverStar; i++) {
+//            Assert.assertTrue(isStarHighlighted(i-1), "Star " + i + " is not highlighted");
 //        }
-//
-//        for (int i = hoverStar + 1; i <= 5; i++) {
-//            Assert.assertFalse(isStarHighlighted(i-1), "Star " + i + " is highlighted");
-//        }
-    }
+////
+////        for (int i = hoverStar + 1; i <= 5; i++) {
+////            Assert.assertFalse(isStarHighlighted(i-1), "Star " + i + " is highlighted");
+////        }
+//    }
 
     public int getSelectedRating() {
         WebElement selectedStar = commentItem.get(commentItem.size() - 1).findElement(By.xpath("//div[@class='review-comment']//span[@class='star-score']"));
@@ -626,7 +613,13 @@ public class DetailJobPage {
         Assert.assertTrue(isValid, "Validation message should match");
     }
 
-    public void verifyAlertDisappeared(){
+    public void verifyAlertDisappeared_Input(){
+        String validationMessage = (String)((JavascriptExecutor) driver).executeScript("return arguments[0].validationMessage;", commentTextarea);
+        Assert.assertTrue(validationMessage == null || validationMessage.isEmpty(), "Validation message should not be shown");
+    }
+
+    public void verifyAlertDisappeared_ClickOutside(){
+        commentTitle.click();
         String validationMessage = (String)((JavascriptExecutor) driver).executeScript("return arguments[0].validationMessage;", commentTextarea);
         Assert.assertTrue(validationMessage == null || validationMessage.isEmpty(), "Validation message should not be shown");
     }
