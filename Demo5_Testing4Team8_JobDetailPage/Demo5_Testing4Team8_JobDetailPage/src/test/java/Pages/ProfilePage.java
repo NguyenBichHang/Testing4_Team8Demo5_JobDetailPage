@@ -31,9 +31,6 @@ public class ProfilePage {
     @FindBy(xpath ="//div[@class='gigs_card']")
     private List<WebElement> jobItem;
 
-//    @FindBy(xpath ="(//div[@class='gigs_card'])[last()]")
-//    private WebElement lastJobItem;
-
     @FindBy(xpath ="(//div[@class='gigs_card'])[last()]//h1")
     private WebElement lastJobTitle;
 
@@ -67,6 +64,9 @@ public class ProfilePage {
     @FindBy(xpath ="//button[@aria-label='close']")
     private WebElement alertCloseButton;
 
+    @FindBy(xpath ="//img[@class='avatar']")
+    private WebElement avatarProfile;
+
 //    **********
 //    *****Profile Page - Methods*****
     public void verifyJobDisplay(){
@@ -79,12 +79,10 @@ public class ProfilePage {
     }
 
     public void verifyJobDisplayEmpty(){
-        Assert.assertFalse(jobListSection.isDisplayed(), "Job đã thuê được hiển thị");
+        Assert.assertFalse(jobListSection.isDisplayed(), "Hired Job is displayed");
         Assert.assertTrue(getJobItemsCount() > 0,
-                "At least one job should be displayed in the list");
-
+                "No jobs is displayed in the list");
         System.out.println("Found " + (getJobItemsCount() - 1) + " job items");
-//        String srcJobListImage = jobListImage.getAttribute("src");
     }
 
     public void verifyJobDetailContent(){
@@ -129,7 +127,7 @@ public class ProfilePage {
     }
 
     public void verifyAlertAutoClose(){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(6));
         boolean invisible = wait.until(ExpectedConditions.invisibilityOf(delAlert));
         Assert.assertTrue(invisible, "DEL alert should not be visible");
     }
@@ -148,9 +146,8 @@ public class ProfilePage {
         Assert.assertTrue(invisible, "DEL alert should not be visible");
     }
 
-    public void verifyHoverAlert() throws InterruptedException {
+    public void verifyHoverAlert() {
         actions.moveToElement(delAlert).perform();
-        Thread.sleep(6000);
         Assert.assertTrue(delAlert.isDisplayed(),
                 "DEL alert should be still visible");
     }
@@ -158,8 +155,14 @@ public class ProfilePage {
     public void verifyMoveOutAlert() {
         actions.moveToElement(delAlert).perform();
         actions.moveByOffset(100, 100).perform();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(6));
         boolean invisible = wait.until(ExpectedConditions.invisibilityOf(delAlert));
         Assert.assertTrue(invisible, "DEL alert should not be visible");
+    }
+
+    public void goToProfilePage() {
+        avatarProfile.click();
+        Assert.assertTrue(driver.getCurrentUrl().contains("profile"),
+                "FAIL. Vẫn ở trang Job Detail");
     }
 }

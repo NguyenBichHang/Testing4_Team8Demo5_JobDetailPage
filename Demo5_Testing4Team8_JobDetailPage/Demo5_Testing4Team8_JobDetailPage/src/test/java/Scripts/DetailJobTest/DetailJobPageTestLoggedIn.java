@@ -18,15 +18,16 @@ public class DetailJobPageTestLoggedIn extends LoggedInBaseTest {
         detailJobPage.inputComment("hangtest");
     }
 
-
-    //    Test Navigation
+    //  *****
+    //  *****Test Navigation*****
     @Test (description = "Check Navigation Link Display")
     public void testNavigationLinkDisplay() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.verifyNavigationLinkDisplayed();
     }
 
-    //    Test Seacrh Box
+    //  *****
+    //  *****Test Seacrh Box*****
     @Test (description = "Check Placeholder of textbox Search")
     public void testTextboxSearchPlaceholder() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);

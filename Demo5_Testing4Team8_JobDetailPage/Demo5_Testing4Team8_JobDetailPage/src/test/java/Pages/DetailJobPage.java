@@ -204,6 +204,7 @@ public class DetailJobPage {
         Assert.assertTrue(navigation2.isDisplayed(), "Link Navigation is not displayed");
         Assert.assertTrue(navigation3.isDisplayed(), "Link Navigation is not displayed");
     }
+
 //  *****
 //  *****Methods - Job Detail*****
     public void verifyJobDetail(){
@@ -233,37 +234,6 @@ public class DetailJobPage {
         String finalTransform = js.executeScript(
                 "return window.getComputedStyle(arguments[0]).transform", jobImage).toString();
         System.out.println("Final transform after mouse leave: " + finalTransform);
-    }
-
-//  *****
-//  *****Methods - About The Seller*****
-    public void verifyAvatarDisplay(){
-        String getSellerAvatarSrc = sellerAvatarImg.getAttribute("src");
-        String getSellerAvatarAlt = sellerAvatarImg.getAttribute("alt");
-        if (sellerAvatarImg.isDisplayed() && getSellerAvatarSrc != null && !getSellerAvatarSrc.isEmpty()) {
-            // Trường hợp avatar load được
-            Assert.assertTrue(getSellerAvatarSrc.startsWith("http") || getSellerAvatarSrc.endsWith(".png") || getSellerAvatarSrc.endsWith(".jpg"),
-                 "Ảnh avatar phải có link hợp lệ");
-        } else {
-            // Trường hợp avatar bị lỗi load => kiểm tra alt
-//            Assert.assertTrue(alt != null && !alt.isEmpty(), "Alt text phải tồn tại khi ảnh lỗi");
-            Assert.assertNotNull(getSellerAvatarAlt, "Alt text phải tồn tại khi ảnh lỗi");
-            Assert.assertFalse(getSellerAvatarAlt.isEmpty(), "Alt text không được để trống khi ảnh lỗi");
-            System.out.println("Ảnh lỗi => hiển thị alt: " + getSellerAvatarAlt);
-            }
-        }
-
-    public void verifyContactMeButtonNotLoggedIn(){
-        Actions actions = new Actions(driver);
-        actions.moveToElement(contactMeButton).click().perform();
-        Assert.assertTrue(driver.getCurrentUrl().contains("login"), "FAIL. Vẫn ở trang Job Detail");
-    }
-
-    public void verifyContactModalDisplay(){
-        Actions actions = new Actions(driver);
-        actions.moveToElement(contactMeButton).click().perform();
-        Assert.assertFalse(contactModal.isEmpty(),
-                "Contact Modal should be visible");
     }
 
 //  *****
@@ -346,16 +316,52 @@ public class DetailJobPage {
     }
 
     public void verifyCompareButtonNotLoggedIn(){
+        Assert.assertTrue(compareButton.isDisplayed() && compareButton.isEnabled(),
+                "Can not click compare button");
         compareButton.click();
         Assert.assertTrue(driver.getCurrentUrl().contains("login"),
                 "FAIL. Vẫn ở trang Job Detail");
     }
 
     public void verifyCompareButtonLoggedIn(){
+        Assert.assertTrue(compareButton.isDisplayed() && compareButton.isEnabled(),
+                "Can not click compare button");
         compareButton.click();
         Assert.assertTrue(driver.getCurrentUrl().contains("comparepackage"),
                 "FAIL. Vẫn ở trang Job Detail");
     }
+
+//  *****
+//  *****Methods - About The Seller*****
+    public void verifyAvatarDisplay(){
+        String getSellerAvatarSrc = sellerAvatarImg.getAttribute("src");
+        String getSellerAvatarAlt = sellerAvatarImg.getAttribute("alt");
+        if (sellerAvatarImg.isDisplayed() && getSellerAvatarSrc != null && !getSellerAvatarSrc.isEmpty()) {
+            // Trường hợp avatar load được
+            Assert.assertTrue(getSellerAvatarSrc.startsWith("http") || getSellerAvatarSrc.endsWith(".png") || getSellerAvatarSrc.endsWith(".jpg"),
+                    "Ảnh avatar phải có link hợp lệ");
+        } else {
+            // Trường hợp avatar bị lỗi load => kiểm tra alt
+//            Assert.assertTrue(alt != null && !alt.isEmpty(), "Alt text phải tồn tại khi ảnh lỗi");
+            Assert.assertNotNull(getSellerAvatarAlt, "Alt text phải tồn tại khi ảnh lỗi");
+            Assert.assertFalse(getSellerAvatarAlt.isEmpty(), "Alt text không được để trống khi ảnh lỗi");
+            System.out.println("Ảnh lỗi => hiển thị alt: " + getSellerAvatarAlt);
+        }
+    }
+
+    public void verifyContactMeButtonNotLoggedIn(){
+        Actions actions = new Actions(driver);
+        actions.moveToElement(contactMeButton).click().perform();
+        Assert.assertTrue(driver.getCurrentUrl().contains("login"), "FAIL. Vẫn ở trang Job Detail");
+    }
+
+    public void verifyContactModalDisplay(){
+        Actions actions = new Actions(driver);
+        actions.moveToElement(contactMeButton).click().perform();
+        Assert.assertFalse(contactModal.isEmpty(),
+                "Contact Modal should be visible");
+    }
+
 //  *****
 //  *****Methods - FAQ*****
     public void FAQ() {

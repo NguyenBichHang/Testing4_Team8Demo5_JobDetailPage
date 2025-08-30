@@ -18,7 +18,7 @@ public class ProfileTest extends LoggedInBaseTest {
         profilePage.verifyJobDisplayEmpty();
     }
 
-    @Test (description = "Check Hired Job List Content Display")
+    @Test (priority = 2, description = "Check Hired Job List Content Display")
     public void testJobDisplay() {
         ProfilePage profilePage = new ProfilePage(driver);
         DetailJobPage detailJobPage = new DetailJobPage(driver);
@@ -92,7 +92,7 @@ public class ProfileTest extends LoggedInBaseTest {
     }
 
     @Test (description = "Check DEL Alert - Hover")
-    public void testHoverAlert() throws InterruptedException {
+    public void testHoverAlert() {
         ProfilePage profilePage = new ProfilePage(driver);
         DetailJobPage detailJobPage = new DetailJobPage(driver);
 //        Thực thi xử lý thuê Job trong trường hợp Job chưa được thuê

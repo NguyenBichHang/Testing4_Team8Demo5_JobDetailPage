@@ -9,8 +9,8 @@ import org.testng.annotations.Test;
 
 @Listeners({SimpleListener.class, ExtentReportListener.class})
 public class DetailJobPageTest extends NotLoggedInBaseTest {
-
-    //    Test Package
+    //  *****
+    //  *****Test Package*****
     @Test (description = "Check Tab Basic _ Continue Button _ Not Logged In")
     public void testContinueButtonTabBasicNotLoggedIn() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
@@ -53,7 +53,8 @@ public class DetailJobPageTest extends NotLoggedInBaseTest {
         detailJobPage.verifyCompareButtonNotLoggedIn();
     }
 
-    //    Test About The Seller
+    //  *****
+    //  *****Test About The Seller*****
     @Test (description = "Check Contact Me Button _ Not Logged In")
     public void testContactMeButtonNotLoggedIn() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
@@ -62,7 +63,6 @@ public class DetailJobPageTest extends NotLoggedInBaseTest {
 
     //  *****
     //  *****Test Comment Section*****
-
     @Test (description = "Check Comment Fail - Not Logged In - Input Comment")
     public void testCommentNotLoggedIn_InputComment() throws InterruptedException {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
@@ -72,7 +72,7 @@ public class DetailJobPageTest extends NotLoggedInBaseTest {
     }
 
     @Test (description = "Check Comment Fail - Not Logged In - No Input Comment")
-    public void testCommentWithoutLoggedIn_NoInput() throws InterruptedException {
+    public void testCommentWithoutLoggedIn_NoInput() {
         DetailJobPage detailJobPage = new DetailJobPage(driver);
         detailJobPage.inputComment("");
         detailJobPage.clickCommentButton();
